@@ -1,4 +1,4 @@
-import cn from "../utility"
+import { cn } from "../utility"
 import aqiScale from "../assets/aqi-scale.svg"
 
 type Props = {
@@ -12,7 +12,7 @@ const Footer = (props: Props) => {
             props.className
         )}>
             <div className="aqi-scale flex items-center justify-center">
-                <img className="aspect-[1250/69] w-full lg:w-[60%]" src={aqiScale}></img>
+                <img className="aspect-[1250/69] w-full lg:w-[130rem]" src={aqiScale}></img>
             </div>
         </footer>
     )
