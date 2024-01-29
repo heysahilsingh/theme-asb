@@ -10,8 +10,8 @@ const CompareAqi = (props: Props) => {
     const indoorData = props.apiData.indoorData;
     const outdoorData = props.apiData.outdoorData;
 
-    const indoorAqi = Math.floor(indoorData.aqiValue || 0)
-    const outdoorAqi = Math.floor(outdoorData.aqiValue || 0);
+    const indoorAqi = Math.floor(indoorData.aqiValue > 0 ? indoorData.aqiValue : 1)
+    const outdoorAqi = Math.floor(outdoorData.aqiValue > 0 ? outdoorData.aqiValue : 1);
 
     if (indoorAqi == outdoorAqi) {
         return (

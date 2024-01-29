@@ -51,12 +51,12 @@ const Content = (props: Props) => {
         indoorData: {
             locationname: "Elementary Campus",
             cityname: "Mumbai",
-            aqiValue: 0
+            aqiValue: 1
         },
         outdoorData: {
             locationname: "US Consulate",
             cityname: "Mumbai",
-            aqiValue: 0
+            aqiValue: 1
         },
         lastUpdatedAt: new Date().toLocaleString()
     });
@@ -124,11 +124,11 @@ const Content = (props: Props) => {
         // Initial fetch
         fetchData();
 
-        // Set up interval for subsequent fetches every 10 seconds
-        // const intervalId = setInterval(fetchData, 10000);
+        // Set up interval for subsequent fetches every 1 minute
+        const intervalId = setInterval(fetchData, (1000 * 60));
 
         // Cleanup the interval on component unmount
-        // return () => clearInterval(intervalId);
+        return () => clearInterval(intervalId);
 
     }, [])
 
