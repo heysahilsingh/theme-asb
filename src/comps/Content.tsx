@@ -18,13 +18,14 @@ export type ApiData = {
         cityname: string
         aqiValue: number
     }
-    lastUpdatedAt: Date
+    lastUpdatedAt: string
 }
 
 type ApiCallResponseLocation = {
     cityname: string
     id: string
     locationname: string
+    last_updated: string
     realtime: {
         sensorid: string
         sensorname: string
@@ -57,7 +58,7 @@ const Content = (props: Props) => {
             cityname: "Mumbai",
             aqiValue: 0
         },
-        lastUpdatedAt: new Date()
+        lastUpdatedAt: new Date().toLocaleString()
     });
 
     useEffect(() => {
@@ -105,7 +106,7 @@ const Content = (props: Props) => {
                                 ...prev.outdoorData,
                                 aqiValue: outDoorData.realtime.find(sensor => sensor.sensorname == "AQI-IN")?.sensorvalue || 0
                             },
-                            lastUpdatedAt: new Date()
+                            lastUpdatedAt: indoorData.last_updated
                         }
                     })
                 }
@@ -161,7 +162,7 @@ const Content = (props: Props) => {
 
             {/* Last Updated */}
             <div className="last-updated text-center text-[#27AAE0] text-[1.7rem] col-span-full">
-                <p>Last Update: <span className='font-semibold'>Today, 10:12:16 AM</span></p>
+                <p>Last Update: <span className='font-semibold'>{apiData.lastUpdatedAt}</span></p>
             </div>
         </main>
     )
