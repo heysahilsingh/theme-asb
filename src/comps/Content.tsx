@@ -161,7 +161,7 @@ const Content = (props: Props) => {
             </div>
 
             {/* Comparison */}
-            <div className="comparison bg-[#F3F4F6] rounded-[2rem] h-fit col-span-full text-center text-[#677580] font-bold p-[1.5rem]">
+            <div className="comparison bg-[rgba(243,244,246,0.55)] rounded-[2rem] h-fit col-span-full text-center text-[#677580] font-bold p-[1.5rem]">
                 <CompareAqi apiData={apiData} />
             </div>
 
