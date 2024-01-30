@@ -97,6 +97,8 @@ const Content = (props: Props) => {
                     const indoorData = data.IndoorData[campus || 0];
                     const outDoorData = data.OutdoorData;
 
+                    console.log(indoorData.last_updated)
+
                     setApiData(prev => {
                         return {
                             initialData: false,
@@ -167,7 +169,7 @@ const Content = (props: Props) => {
 
             {/* Last Updated */}
             <div className="last-updated text-center text-[#27AAE0] text-[1.7rem] col-span-full">
-                {!apiData.indoorData && <p>Last Update: <span className='font-semibold'>{apiData.lastUpdatedAt}</span></p>}
+                {!apiData.initialData && <p>Last Update: <span className='font-semibold'>{apiData.lastUpdatedAt}</span></p>}
             </div>
         </main>
     )
