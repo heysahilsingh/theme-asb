@@ -60,8 +60,8 @@ const AqiInfoCard = (props: Props) => {
                 )
                 :
                 (
-                    <div className="aqi-info grid grid-cols-[0.75fr_0.25fr] my-auto relative h-full w-full rounded-[4rem] overflow-hidden">
-                        <div className="col1 z-[2] flex flex-col justify-center py-[5rem] px-[8rem] gap-[2rem]">
+                    <div className="aqi-info grid grid-cols-[75%_25%] my-auto relative h-full w-full rounded-[4rem] overflow-hidden">
+                        <div className="col1 z-[2] flex flex-col justify-center py-[5rem] pl-[5rem] lg:px-[8rem] gap-[2rem]">
                             <div className="aqi-meter w-full grow -mt-[1.5rem] -ml-[3rem]">
                                 <AqiMeter value={valueDataMeta.value} />
                             </div>
