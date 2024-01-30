@@ -8,6 +8,7 @@ type Props = {
 }
 
 export type ApiData = {
+    initialData: boolean
     indoorData: {
         locationname: string
         cityname: string
@@ -47,30 +48,31 @@ type ApiCallResponse = {
 
 const Content = (props: Props) => {
 
+    // Get Query
+    const queryString = window.location.search;
+
+    // Create a URLSearchParams object from the query string
+    const urlParams = new URLSearchParams(queryString);
+
+    // Get the value of the 'campus' parameter
+    const campusParam = urlParams.get('campus');
+
     const [apiData, setApiData] = useState<ApiData>({
+        initialData: true,
         indoorData: {
-            locationname: "Elementary Campus",
+            locationname: campusParam?.toLowerCase() == "secondary" ? "Secondary Campus" : "Elementary Campus",
             cityname: "Mumbai",
-            aqiValue: 1
+            aqiValue: 0
         },
         outdoorData: {
             locationname: "US Consulate",
             cityname: "Mumbai",
-            aqiValue: 1
+            aqiValue: 0
         },
         lastUpdatedAt: new Date().toLocaleString()
     });
 
     useEffect(() => {
-
-        // Get Query
-        const queryString = window.location.search;
-
-        // Create a URLSearchParams object from the query string
-        const urlParams = new URLSearchParams(queryString);
-
-        // Get the value of the 'campus' parameter
-        const campusParam = urlParams.get('campus');
 
         // Set campus
         const campus = campusParam?.toLowerCase() == "secondary" ? 0 : 1;
@@ -97,6 +99,7 @@ const Content = (props: Props) => {
 
                     setApiData(prev => {
                         return {
+                            initialData: false,
                             indoorData: {
                                 ...prev.indoorData,
                                 locationname: indoorData.locationname,
@@ -134,12 +137,13 @@ const Content = (props: Props) => {
 
     return (
         <main className={cn(
-            "content grid items-center gap-[3rem] md:grid-cols-2 grid-rows-[1fr_1fr_auto_auto] md:grid-rows-[1fr_auto_auto]",
+            "content grid items-center gap-[3rem] lg:grid-cols-2 grid-rows-[1fr_1fr_auto_auto] lg:grid-rows-[1fr_auto_auto]",
             props.className
         )}>
             {/* Card Indoor */}
             <div className="indoor h-full flex items-center">
                 <AqiInfoCard
+                    isLoading={apiData.initialData}
                     locationType='indoor'
                     location={`${apiData.indoorData.locationname} AQI`}
                     aqiValue={apiData.indoorData.aqiValue}
@@ -149,6 +153,7 @@ const Content = (props: Props) => {
             {/* Card Outdoor */}
             <div className="outdoor h-full flex items-center">
                 <AqiInfoCard
+                    isLoading={apiData.initialData}
                     locationType='outdoor'
                     location={`${apiData.outdoorData.locationname}, ${apiData.outdoorData.cityname}`}
                     aqiValue={apiData.outdoorData.aqiValue}
@@ -162,7 +167,7 @@ const Content = (props: Props) => {
 
             {/* Last Updated */}
             <div className="last-updated text-center text-[#27AAE0] text-[1.7rem] col-span-full">
-                <p>Last Update: <span className='font-semibold'>{apiData.lastUpdatedAt}</span></p>
+                {!apiData.indoorData && <p>Last Update: <span className='font-semibold'>{apiData.lastUpdatedAt}</span></p>}
             </div>
         </main>
     )

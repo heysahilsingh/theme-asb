@@ -13,27 +13,27 @@ const CompareAqi = (props: Props) => {
     const indoorAqi = Math.floor(indoorData.aqiValue > 0 ? indoorData.aqiValue : 1)
     const outdoorAqi = Math.floor(outdoorData.aqiValue > 0 ? outdoorData.aqiValue : 1);
 
-    const totalAqi = indoorAqi + outdoorAqi;
-
-    if (indoorAqi == outdoorAqi) {
+    if (props.apiData.initialData) {
+        return <div className="text-[2rem] animate-pulse">Fetching Fresh Data....</div>
+    } else if (indoorAqi == outdoorAqi) {
         return (
             <p className='text-[2rem]'>Indoor AQI is as same as the nearest outdoor monitor at {outdoorData.locationname}, {outdoorData.cityname}</p>
         )
     } else if (indoorAqi < outdoorAqi) {
-        const ratio = ((indoorAqi / totalAqi) * 100);
+        const ratio = ((outdoorAqi - indoorAqi) / outdoorAqi) * 100;
 
         const aqiMeta = aqiDataMeta(indoorAqi);
 
         return (
-            <p className='text-[2rem]'>Indoor AQI is <span className='text-[3rem]' style={{ color: aqiMeta.rangeColor }}>{(100 - ratio).toFixed(1)}%</span> better than the nearest outdoor monitor at {outdoorData.locationname}, {outdoorData.cityname}</p>
+            <p className='text-[2rem]'>Indoor AQI is <span className='text-[3rem]' style={{ color: aqiMeta.rangeColor }}>{(ratio).toFixed(1)}%</span> better than the nearest outdoor monitor at {outdoorData.locationname}, {outdoorData.cityname}</p>
         )
     } else {
-        const ratio = ((indoorAqi / totalAqi) * 100);
+        const ratio = ((indoorAqi - outdoorAqi) / indoorAqi) * 100;
 
         const aqiMeta = aqiDataMeta(outdoorAqi);
 
         return (
-            <p className='text-[2rem]'>Outdoor AQI is <span className='text-[3rem]' style={{ color: aqiMeta.rangeColor }}>{(100 - ratio).toFixed(1)}x</span> better than the indoor monitor at {indoorData.locationname}</p>
+            <p className='text-[2rem]'>Outdoor AQI is <span className='text-[3rem]' style={{ color: aqiMeta.rangeColor }}>{(ratio).toFixed(1)}%</span> better than the indoor monitor at {indoorData.locationname}</p>
         )
     }
 }

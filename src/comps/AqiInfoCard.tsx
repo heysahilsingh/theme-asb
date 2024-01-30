@@ -7,6 +7,7 @@ type Props = {
     locationType: "indoor" | "outdoor"
     location: string
     aqiValue: number
+    isLoading?: boolean
 }
 
 const AqiInfoCard = (props: Props) => {
@@ -52,37 +53,46 @@ const AqiInfoCard = (props: Props) => {
                 <p>{props.location}</p>
             </div>
 
-            <div className="aqi-info grid grid-cols-[75%_25%] my-auto relative h-full w-full rounded-[4rem] overflow-hidden">
-                <div className="col1 z-[2] flex flex-col justify-center py-[5rem] px-[8rem] gap-[2rem]">
-                    <div className="aqi-meter w-full grow -mt-[1.5rem] -ml-[3rem]">
-                        <AqiMeter value={valueDataMeta.value} />
-                    </div>
+            {props.isLoading
+                ?
+                (
+                    <div className="shimmer-bg my-auto relative h-full w-full rounded-[4rem] overflow-hidden"></div>
+                )
+                :
+                (
+                    <div className="aqi-info grid grid-cols-[0.75fr_0.25fr] my-auto relative h-full w-full rounded-[4rem] overflow-hidden">
+                        <div className="col1 z-[2] flex flex-col justify-center py-[5rem] px-[8rem] gap-[2rem]">
+                            <div className="aqi-meter w-full grow -mt-[1.5rem] -ml-[3rem]">
+                                <AqiMeter value={valueDataMeta.value} />
+                            </div>
 
-                    <div className="flex flex-col gap-[0.5rem] aqi-range-detail text-white">
-                        <p className="text-[2rem] font-normal"><span className="text-[2.5rem] font-semibold">Air Quality </span>is</p>
+                            <div className="flex flex-col gap-[0.5rem] aqi-range-detail text-white">
+                                <p className="text-[2rem] font-normal"><span className="text-[2.5rem] font-semibold">Air Quality </span>is</p>
 
-                        <div className="range-name text-[3.5rem] overflow-hidden relative w-fit rounded-[0.3em] px-[1.5em] py-[0.4em] font-bold capitalize leading-[100%] after:content-[''] after:absolute after:top-0 after:left-0 after:z-0 after:w-full after:h-full after:bg-[rgba(0,0,0,0.2)]" style={{ background: valueDataMeta.rangeColor }}>
-                            <span className="z-[1] relative">{valueDataMeta.rangeName}</span>
+                                <div className="range-name text-[3.5rem] overflow-hidden relative w-fit rounded-[0.3em] px-[1.5em] py-[0.4em] font-bold capitalize leading-[100%] after:content-[''] after:absolute after:top-0 after:left-0 after:z-0 after:w-full after:h-full after:bg-[rgba(0,0,0,0.2)]" style={{ background: valueDataMeta.rangeColor }}>
+                                    <span className="z-[1] relative">{valueDataMeta.rangeName}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col2 z-[2] flex flex-col justify-between text-[2rem]">
+                            <div className="location uppercase bg-[rgba(255,255,255,0.3)] font-extrabold text-white p-[1em] rounded-bl-[2em] flex items-center justify-center leading-[100%]">
+                                {props.locationType}
+                            </div>
+
+                            <div className="aqi-range-model relative bg-[rgba(255,255,255,0.75)] aspect-[190/150] rounded-tl-[3em]">
+                                <img className="absolute left-2/4 -translate-x-2/4 bottom-[15%] max-w-[80%] h-[23rem]" src={valueDataMeta.rangeModelImg} alt={valueDataMeta.rangeName}></img>
+                            </div>
+                        </div>
+
+                        <div className="card-overlay z-1 absolute top-0 left-0 w-full h-full" style={{ background: valueDataMeta.rangeColor }}></div>
+
+                        <div className="card-bg absolute bottom-0 left-0 w-full z-0 mix-blend-color-burn opacity-[30%]">
+                            <img className="w-full" src={cardBg}></img>
                         </div>
                     </div>
-                </div>
-
-                <div className="col2 z-[2] flex flex-col justify-between text-[2rem]">
-                    <div className="location uppercase bg-[rgba(255,255,255,0.3)] font-extrabold text-white p-[1em] rounded-bl-[2em] flex items-center justify-center leading-[100%]">
-                        {props.locationType}
-                    </div>
-
-                    <div className="aqi-range-model relative bg-[rgba(255,255,255,0.75)] aspect-[190/150] rounded-tl-[3em]">
-                        <img className="absolute left-2/4 -translate-x-2/4 bottom-[15%] max-w-[80%] h-[23rem]" src={valueDataMeta.rangeModelImg} alt={valueDataMeta.rangeName}></img>
-                    </div>
-                </div>
-
-                <div className="card-overlay z-1 absolute top-0 left-0 w-full h-full" style={{ background: valueDataMeta.rangeColor }}></div>
-
-                <div className="card-bg absolute bottom-0 left-0 w-full z-0 mix-blend-color-burn opacity-[30%]">
-                    <img className="w-full" src={cardBg}></img>
-                </div>
-            </div>
+                )
+            }
         </div>
     )
 }
