@@ -48,19 +48,10 @@ type ApiCallResponse = {
 
 const Content = (props: Props) => {
 
-    // Get Query
-    const queryString = window.location.search;
-
-    // Create a URLSearchParams object from the query string
-    const urlParams = new URLSearchParams(queryString);
-
-    // Get the value of the 'campus' parameter
-    const campusParam = urlParams.get('campus');
-
     const [apiData, setApiData] = useState<ApiData>({
         initialData: true,
         indoorData: {
-            locationname: campusParam?.toLowerCase() == "secondary" ? "Secondary Campus" : "Elementary Campus",
+            locationname: "Secondary Campus",
             cityname: "Mumbai",
             aqiValue: 0
         },
@@ -73,9 +64,6 @@ const Content = (props: Props) => {
     });
 
     useEffect(() => {
-
-        // Set campus
-        const campus = campusParam?.toLowerCase() == "secondary" ? 0 : 1;
 
         // Fetch Function
         const fetchData = async () => {
@@ -94,17 +82,14 @@ const Content = (props: Props) => {
                 if (response.data.length > 0) {
                     const data = response.data[0];
 
-                    const indoorData = data.IndoorData[campus || 0];
+                    const indoorData = data.IndoorData[0];
                     const outDoorData = data.OutdoorData;
-
-                    console.log(indoorData.last_updated)
 
                     setApiData(prev => {
                         return {
                             initialData: false,
                             indoorData: {
                                 ...prev.indoorData,
-                                locationname: indoorData.locationname,
                                 aqiValue: indoorData.realtime.find(sensor => sensor.sensorname == "AQI-IN")?.sensorvalue || 0
                             },
                             outdoorData: {
@@ -129,8 +114,8 @@ const Content = (props: Props) => {
         // Initial fetch
         fetchData();
 
-        // Set up interval for subsequent fetches every 1 minute
-        const intervalId = setInterval(fetchData, (1000 * 60));
+        // Set up interval for subsequent fetches every 30 seconds
+        const intervalId = setInterval(fetchData, (1000 * 30));
 
         // Cleanup the interval on component unmount
         return () => clearInterval(intervalId);
