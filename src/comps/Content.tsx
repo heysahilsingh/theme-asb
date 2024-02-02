@@ -51,7 +51,7 @@ const Content = (props: Props) => {
     const [apiData, setApiData] = useState<ApiData>({
         initialData: true,
         indoorData: {
-            locationname: "Secondary Campus",
+            locationname: "Elementary Campus",
             cityname: "Mumbai",
             aqiValue: 0
         },
@@ -82,7 +82,7 @@ const Content = (props: Props) => {
                 if (response.data.length > 0) {
                     const data = response.data[0];
 
-                    const indoorData = data.IndoorData[0];
+                    const indoorData = data.IndoorData[1];
                     const outDoorData = data.OutdoorData;
 
                     setApiData(prev => {
@@ -90,11 +90,11 @@ const Content = (props: Props) => {
                             initialData: false,
                             indoorData: {
                                 ...prev.indoorData,
-                                aqiValue: indoorData.realtime.find(sensor => sensor.sensorname == "AQI-IN")?.sensorvalue || 0
+                                aqiValue: indoorData.realtime.find(sensor => sensor.sensorname == "AQI-US")?.sensorvalue || 0
                             },
                             outdoorData: {
                                 ...prev.outdoorData,
-                                aqiValue: outDoorData.realtime.find(sensor => sensor.sensorname == "AQI-IN")?.sensorvalue || 0
+                                aqiValue: outDoorData.realtime.find(sensor => sensor.unit == "AQI-US")?.sensorvalue || 0
                             },
                             lastUpdatedAt: indoorData.last_updated
                         }
